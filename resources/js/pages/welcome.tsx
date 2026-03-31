@@ -36,7 +36,11 @@ export default function Welcome() {
     ];
 
     const handleSubmit = () => {
-        router.get('/collection?genre=&page=1&search=' + search);
+        if (search.length > 0) {
+            router.get('/collection?genre=&page=1&search=' + search);
+        } else {
+            return
+        }
     }
 
     const testimonials = [
@@ -58,7 +62,6 @@ export default function Welcome() {
         <>
             <Head title="BukuKu - Baca Kapan Saja" />
 
-            {/* ── SECTION 1: HERO (REFINED) ── */}
             {/* ── SECTION 1: HERO ── */}
             <section className="relative min-h-screen flex items-center justify-center pt-20 pb-12 overflow-hidden font-body bg-bukuku-bg"
                 style={{
@@ -134,7 +137,7 @@ export default function Welcome() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
-                            <button className="bg-bukuku-primary hover:bg-bukuku-hover text-white font-bold px-8 py-3.5 rounded-[1.5rem] transition-all active:scale-95 shadow-lg shadow-bukuku-primary/20">
+                            <button onClick={handleSubmit} className="bg-bukuku-primary hover:bg-bukuku-hover text-white font-bold px-8 py-3.5 rounded-[1.5rem] transition-all active:scale-95 shadow-lg shadow-bukuku-primary/20">
                                 Temukan
                             </button>
                         </motion.div>

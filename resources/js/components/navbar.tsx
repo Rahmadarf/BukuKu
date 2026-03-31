@@ -26,8 +26,8 @@ export default function Navbar() {
         {
             icon: LayoutGrid,
             label: "Semua Kategori",
-            desc: "10K+ judul buku",
-            href: "/collection",
+            desc: "100K+ judul buku",
+            href: "/collection?genre=&page=1&search=",
         },
         {
             icon: Sparkles,

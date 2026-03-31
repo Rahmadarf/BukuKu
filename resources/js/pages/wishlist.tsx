@@ -114,7 +114,7 @@ export default function Wishlist() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Cari di perpustakaanmu..."
-                                className="w-full bg-bukuku-bg border-none rounded-2xl py-3 pl-12 pr-4 text-sm font-medium focus:ring-2 focus:ring-bukuku-primary/20 transition-all outline-none"
+                                className="w-full bg-bukuku-bg text-bukuku-dark border-none rounded-2xl py-3 pl-12 pr-4 text-sm font-medium focus:ring-2 focus:ring-bukuku-primary/20 transition-all outline-none"
                             />
                         </div>
 
