@@ -226,7 +226,7 @@ export default function Collection() {
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                     placeholder="Cari judul, penulis, atau ISBN..."
-                                    className="w-full bg-bukuku-bg border-none rounded-2xl py-3.5 pl-12 pr-10 text-sm font-medium focus:ring-2 focus:ring-bukuku-primary/10 transition-all outline-none"
+                                    className="w-full bg-bukuku-bg text-bukuku-dark border-none rounded-2xl py-3.5 pl-12 pr-10 text-sm font-medium focus:ring-2 focus:ring-bukuku-primary/10 transition-all outline-none"
                                 />
                                 {search && (
                                     <button onClick={() => setSearch('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-600">
