@@ -28,11 +28,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->respond(function (Response $response) {
-            if (in_array($response > getStatusCode(), [405, 500, 403, 404])) {
-                return Inertia::render('error/error', ['status' => $response->getStatusCode()])
-                    ->toResponse($response->request())
-                    ->setStatusCode($response->getStatusCode());
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
+            if (!$request->expectsJson()) {
+                return response()->view('error', ['exception' => $e], $e->getStatusCode());
             }
         });
     })->create();
