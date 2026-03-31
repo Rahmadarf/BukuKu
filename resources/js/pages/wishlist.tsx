@@ -1,13 +1,20 @@
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import MainLayout from "@/layouts/main-layout";
 import { ReactNode, useState, useEffect } from "react";
 import { Search, X, Bookmark, BookOpen, CheckCircle2, Clock, Plus, Filter as FilterIcon } from "lucide-react";
 import WishlistCard, { type WishlistBook, type ReadingStatus } from "@/components/wishlist-book";
 import { AnimatePresence, motion } from "framer-motion";
 
+
 export default function Wishlist() {
+    const { books: initialBooks } = usePage<{ books: WishlistBook[] }>().props; const [books, setBooks] = useState<WishlistBook[]>(initialBooks);
     const [filter, setFilter] = useState('all');
     const [search, setSearch] = useState('');
+
+    // Update books ketika props dari backend berubah
+    useEffect(() => {
+        setBooks(initialBooks);
+    }, [initialBooks]);
 
     // Debounce Search untuk efisiensi server
     useEffect(() => {
@@ -15,7 +22,7 @@ export default function Wishlist() {
             router.get('/collection/wishlist', {
                 search,
                 status: filter === 'all' ? '' : filter,
-            }, { preserveState: true, replace: true })
+            }, { preserveState: true, replace: true, only: ['books'] })
         }, 500)
         return () => clearTimeout(timeout)
     }, [search, filter])
@@ -27,14 +34,21 @@ export default function Wishlist() {
         { name: "Selesai", value: "finished" },
     ]
 
-    // Mock data (Pastikan nanti diisi dari props backend)
-    const [books, setBooks] = useState<WishlistBook[]>([
-        { id: '1', title: 'Bumi', author: 'Tere Liye', cover: '/images/bumi.png', genre: 'Fiksi', status: 'unread', href: '/book/1' },
-        { id: '2', title: 'Pulang', author: 'Tere Liye', cover: '/images/pulang.jpeg', genre: 'Fiksi', status: 'finished', href: '/book/2' },
-    ])
-
     const handleStatusChange = (id: string, newStatus: ReadingStatus) => {
-        setBooks(prev => prev.map(book => book.id === id ? { ...book, status: newStatus } : book));
+        router.patch(`/collection/wishlist/${encodeURIComponent(id)}`, {
+            status: newStatus,
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setBooks(prev => prev.map(book => book.id === id ? { ...book, status: newStatus } : book));
+            }
+        });
+    }
+
+    const handleRemove = (id: string) => {
+        router.delete(`/collection/wishlist/${encodeURIComponent(String(id))}`, {
+            preserveScroll: true,
+        })
     }
 
     const stats = {
@@ -156,7 +170,7 @@ export default function Wishlist() {
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: idx * 0.05 }}
                                     >
-                                        <WishlistCard {...book} onStatusChange={handleStatusChange} />
+                                        <WishlistCard {...book} onStatusChange={handleStatusChange} onRemove={handleRemove} />
                                     </motion.div>
                                 ))}
                             </motion.div>

@@ -377,13 +377,8 @@
         @endif
 
         <div class="buttons">
-            <a href="/" class="btn-primary">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                Beranda
+            <a href="/login" class="btn-primary">
+                Login
             </a>
             @if($code === 419)
                 <a href="javascript:location.reload()" class="btn-secondary">Refresh Sesi</a>

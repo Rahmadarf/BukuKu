@@ -54,6 +54,8 @@ interface Props extends PageProps {
 
     }
 
+    wishlistedIds: string[];
+
 }
 
 
@@ -75,7 +77,7 @@ const categories = [
 ]
 
 export default function Collection() {
-    const { books, pagination, filters } = usePage<Props>().props;
+    const { books, pagination, filters, wishlistedIds = [] } = usePage<Props>().props;
     const [search, setSearch] = useState(filters.search ?? '')
     const [activeGenre, setActiveGenre] = useState(filters.genre ?? 'all')
     const [activeDisplay, setActiveDisplay] = useState('Grid');
@@ -295,6 +297,8 @@ export default function Collection() {
                                             badge={book.badge}
 
                                             genre={book.genre ?? undefined}
+
+                                            isWhislisted={wishlistedIds.includes(book.id)}
 
                                             href={`/book/${book.id}`}
                                         />

@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { BookOpen, Bookmark, BookmarkCheck } from 'lucide-react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 
 export type BadgeType = 'Gratis' | 'Premium' | 'Member' | 'Baru'
 
 interface BookCardProps {
-    id: number
+    id: Number
     title: string
     author: string
     cover: string
     badge?: BadgeType
     genre?: string
     href?: string
-    onWishlist?: (id: number) => void
+    isWhislisted?: boolean
 }
 
 export default function BookCard({
@@ -23,15 +23,33 @@ export default function BookCard({
     badge,
     genre,
     href = '#',
-    onWishlist,
+    isWhislisted = false,
 }: BookCardProps) {
-    const [wishlisted, setWishlisted] = useState(false)
+    const [wishlisted, setWishlisted] = useState(isWhislisted)
 
     const handleWishlist = (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        setWishlisted((prev) => !prev)
-        onWishlist?.(id)
+
+        if (wishlisted) {
+            // jika sudah ada di wishlist, hapus
+            router.delete(`/collection/wishlist/${encodeURIComponent(String(id))}`, {
+                preserveScroll: true,
+                onSuccess: () => setWishlisted(false)
+            })
+        } else {
+            // jika ga ada di wishlist, tambah
+            router.post('/collection/wishlist', {
+                book_id: String(id),
+                title,
+                author,
+                cover,
+                genre: genre ?? null,
+            }, {
+                preserveScroll: true,
+                onSuccess: () => setWishlisted(true)
+            })
+        }
     }
 
     const badgeStyle = {
