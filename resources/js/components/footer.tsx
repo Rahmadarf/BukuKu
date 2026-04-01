@@ -14,10 +14,9 @@ export default function Footer() {
     ];
 
     const SocialMedia = [
-        { name: "Instagram", href: "#", icon: AiFillInstagram },
-        { name: "Linkedin", href: "#", icon: BiLogoLinkedin },
-        { name: "Youtube", href: "#", icon: FaYoutube },
-        { name: "Github", href: "#", icon: FaGithub },
+        { name: "Instagram", href: "https://www.instagram.com/rahmadarifinsusilo/", icon: AiFillInstagram },
+        { name: "Linkedin", href: "www.linkedin.com/in/rahmad-arifin-55460b37b", icon: BiLogoLinkedin },
+        { name: "Github", href: "#https://github.com/Rahmadarf", icon: FaGithub },
     ]
 
     const Customers = [
