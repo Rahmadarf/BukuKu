@@ -15,8 +15,8 @@ export default function Footer() {
 
     const SocialMedia = [
         { name: "Instagram", href: "https://www.instagram.com/rahmadarifinsusilo/", icon: AiFillInstagram },
-        { name: "Linkedin", href: "www.linkedin.com/in/rahmad-arifin-55460b37b", icon: BiLogoLinkedin },
-        { name: "Github", href: "#https://github.com/Rahmadarf", icon: FaGithub },
+        { name: "Linkedin", href: "https://www.linkedin.com/in/rahmad-arifin-55460b37b", icon: BiLogoLinkedin },
+        { name: "Github", href: "https://github.com/Rahmadarf", icon: FaGithub },
     ]
 
     const Customers = [
@@ -139,14 +139,16 @@ export default function Footer() {
                     {/* Social Media */}
                     <div className="flex gap-2">
                         {SocialMedia.map((s) => (
-                            <Link
+                            <a
                                 key={s.name}
                                 href={s.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors duration-200"
                                 title={s.name}
                             >
                                 <s.icon size={15} className="text-white/80" />
-                            </Link>
+                            </a>
                         ))}
                     </div>
 
