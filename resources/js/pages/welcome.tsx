@@ -63,7 +63,7 @@ export default function Welcome() {
             <Head title="BukuKu - Baca Kapan Saja" />
 
             {/* ── SECTION 1: HERO ── */}
-            <section className="relative min-h-screen flex items-center justify-center pt-20 pb-12 overflow-hidden font-body bg-bukuku-bg"
+            <section className="relative min-h-screen flex items-center justify-center pt-30 md:pt-20 pb-12 overflow-hidden font-body bg-bukuku-bg"
                 style={{
                     backgroundColor: '#FAFAF8',
                     // Kita pertahankan dot pattern kesukaanmu, tapi dengan opasitas yang lebih soft
@@ -137,7 +137,7 @@ export default function Welcome() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
-                            <button onClick={handleSubmit} className="bg-bukuku-primary hover:bg-bukuku-hover text-white font-bold px-8 py-3.5 rounded-[1.5rem] transition-all active:scale-95 shadow-lg shadow-bukuku-primary/20">
+                            <button onClick={handleSubmit} className="bg-bukuku-primary hover:bg-bukuku-hover text-white font-bold md:px-8 px-3 md:py-3.5 py-2 rounded-[1.5rem] transition-all active:scale-95 shadow-lg shadow-bukuku-primary/20">
                                 Temukan
                             </button>
                         </motion.div>

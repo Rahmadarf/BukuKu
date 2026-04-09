@@ -1,11 +1,12 @@
 import { Link, usePage } from "@inertiajs/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LayoutGrid, User, Clock, Bookmark, ChevronDown, Settings, LogOut, Sparkles } from "lucide-react";
+import { Menu, X, LayoutGrid, LayoutDashboard, User, LogIn, UserPlus, Clock, Bookmark, ChevronDown, Settings, LogOut, Sparkles, House, Info, ChevronRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { router } from "@inertiajs/react";
 
 export default function Navbar() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
     const [settingOpen, setSettingOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mobileKoleksiOpen, setMobileKoleksiOpen] = useState(false);
@@ -16,10 +17,10 @@ export default function Navbar() {
     const url = usePage().url;
 
     const navLinks = [
-        { name: "Beranda", href: "/" },
-        { name: "Koleksi", href: "/collection", hasDropdown: true },
-        { name: "Tentang", href: "/about" },
-        { name: "Bantuan", href: "/help" },
+        { name: "Beranda", href: "/", icon: House },
+        { name: "Koleksi", href: "/collection", icon: LayoutDashboard, hasDropdown: true },
+        { name: "Tentang", href: "/about", icon: Info },
+        { name: "Bantuan", href: "/help", icon: Info },
     ];
 
     const koleksiItems = [
@@ -179,24 +180,157 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile Toggle */}
-                <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 rounded-xl bg-gray-50 text-bukuku-text">
+                <button onClick={() => setMobileOpen(!mobileOpen)} className={`md:hidden p-2 rounded-xl cursor-pointer transition-all duration-300 ${mobileOpen ? 'bg-bukuku-primary text-white' : 'bg-bukuku-light text-bukuku-primary'}`}>
                     {mobileOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </div>
 
-            {/* Mobile Menu (Sederhana & Clean) */}
+            {/* Mobile Menu */}
             <AnimatePresence>
-                {mobileOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="absolute top-20 left-0 w-full bg-white border-b border-bukuku-border/30 shadow-xl px-6 py-8 md:hidden"
-                    >
-                        {/* Mobile links content here */}
-                    </motion.div>
-                )}
+                {mobileOpen &&
+                    <div className="md:hidden">
+
+                        {/* Profile Info */}
+                        <motion.div
+                            animate={{
+                                height: "auto",
+                                opacity: 1,
+                                transition: {
+                                    duration: 0.4,
+                                    ease: "easeOut",
+                                }
+                            }}
+                            initial={{
+                                height: 0,
+                                opacity: 0,
+                                transition: {
+                                    duration: 0.3,
+                                    ease: "easeInOut",
+                                }
+                            }}
+                            exit={{
+                                height: 0,
+                                opacity: 0,
+                                transition: {
+                                    duration: 0.3,
+                                    ease: "easeInOut",
+                                }
+                            }}
+                            className="absolute top-20 bg-white w-full overflow-hidden">
+                            <div className="flex flex-col p-5 gap-5">
+
+                                {/* User Information */}
+                                {auth.user && (
+                                    <div className="bg-bukuku-light/90 rounded-xl p-3 flex items-center gap-x-3">
+
+                                        {/* User Initial */}
+                                        <div className="rounded-full bg-bukuku-primary w-12 h-12 flex justify-center items-center">
+                                            <p className="text-white text-center font-bold">{auth.user.name.slice(0, 2).toUpperCase()}</p>
+                                        </div>
+
+                                        {/* Username & email */}
+                                        <div className="flex flex-col">
+                                            <p className="text-bukuku-text text-sm font-extrabold">{auth.user.name}</p>
+                                            <p className="text-gray-400 text-sm font-semibold">{auth.user.email}</p>
+                                        </div>
+
+                                    </div>
+                                )}
+
+
+
+                                {/* Navigation Links */}
+                                <div className="flex flex-col gap-y-2">
+                                    {navLinks.map((link) => {
+                                        const isActive = link.href === url || (link.href !== "/" && url.startsWith(link.href));
+
+
+                                        if (link.hasDropdown) {
+                                            return (
+                                                <div className={`rounded-xl p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer ${isActive ? 'bg-bukuku-light/90' : 'hover:bg-bukuku-light/50'}`}>
+                                                    <button onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)} className={`flex items-center justify-between w-full ${isActive ? 'text-bukuku-primary font-bold' : 'text-bukuku-text font-medium'}`}>
+                                                        <div className="flex items-center gap-x-2">
+                                                            <link.icon size={20} />
+                                                            <p className="text-sm">{link.name}</p>
+                                                        </div>
+                                                        <ChevronRight size={15} className={`transition-all duration-300 ${mobileDropdownOpen ? 'rotate-90' : ''}`} />
+                                                    </button>
+                                                </div>
+                                            )
+                                        }
+
+                                        return (
+                                            <div className={`rounded-xl p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer ${isActive ? 'bg-bukuku-light/90' : 'hover:bg-bukuku-light/50'}`}>
+                                                <Link href={link.href} className={`flex items-center justify-between w-full ${isActive ? 'text-bukuku-primary font-bold' : 'text-bukuku-text font-medium'}`}>
+                                                    <div className="flex items-center gap-x-2">
+                                                        <link.icon size={20} />
+                                                        <p className="text-sm">{link.name}</p>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        )
+
+                                    })}
+                                </div>
+
+
+                                {/* Divider */}
+                                <div className="w-full h-px bg-gray-200" />
+
+                                {/* Auth & Settings */}
+
+                                {auth.user ? (
+                                    <div className="flex flex-col gap-y-2">
+                                        <div className={`rounded-xl p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer ${url === '/settings' ? 'bg-bukuku-light/90' : 'hover:bg-bukuku-light/50'}`}>
+                                            <Link href={'/settings'} className={`flex items-center justify-between w-full ${url === '/settings' ? 'text-bukuku-primary font-bold' : 'text-bukuku-text font-medium'}`}>
+                                                <div className="flex items-center gap-x-2">
+                                                    <Settings size={20} />
+                                                    <p className="text-sm">Pengaturan</p>
+                                                </div>
+                                            </Link>
+                                        </div>
+
+                                        <div className={`rounded-xl p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer hover:bg-red-50`}>
+                                            <button onClick={() => router.post('/logout')} className={`flex items-center justify-between w-full text-bukuku-text font-medium`}>
+                                                <div className="flex items-center gap-x-2 text-red-500 font-bold">
+                                                    <LogOut size={20} />
+                                                    <p className="text-sm">Keluar</p>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) :
+                                    (
+                                        <div className="flex flex-col gap-y-2">
+                                            <div className={`rounded-xl p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer ${url === '/login' ? 'bg-bukuku-light/90' : 'hover:bg-bukuku-light/50'}`}>
+                                                <Link href='/login' className={`flex items-center justify-between w-full ${url === '/login' ? 'text-bukuku-primary font-bold' : 'text-bukuku-text font-medium'}`}>
+                                                    <div className="flex items-center gap-x-2">
+                                                        <LogIn size={20} />
+                                                        <p className="text-sm">Masuk</p>
+                                                    </div>
+                                                </Link>
+                                            </div>
+
+                                            <div className={`rounded-xl p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer hover:bg-bukuku-light/50`}>
+                                                <Link href='/register' className={`flex items-center justify-between w-full text-bukuku-text font-medium`}>
+                                                    <div className="flex items-center gap-x-2">
+                                                        <UserPlus size={20} />
+                                                        <p className="text-sm">Daftar</p>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+
+
+
+                            </div>
+                        </motion.div>
+
+                    </div>
+                }
             </AnimatePresence>
-        </nav>
+        </nav >
     );
 }

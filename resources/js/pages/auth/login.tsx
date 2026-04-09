@@ -198,7 +198,7 @@ export default function Login() {
                                 <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                             ) : (
                                 <>
-                                    <span className="text-sm uppercase tracking-[0.1em]">Masuk Sekarang</span>
+                                    <span className="text-sm uppercase tracking-widest">Masuk Sekarang</span>
                                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                                 </>
                             )}
