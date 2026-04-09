@@ -197,7 +197,7 @@ export default function Welcome() {
             <section id="new-collection" className="py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-6 md:px-8">
 
-                    <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 text-bukuku-primary font-bold text-sm uppercase tracking-widest">
                                 <Zap size={18} fill="currentColor" />

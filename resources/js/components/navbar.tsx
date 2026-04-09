@@ -38,6 +38,27 @@ export default function Navbar() {
         }
     ];
 
+    const mobileKoleksiItems = [
+        {
+            icon: LayoutGrid,
+            label: "Semua Kategori",
+            desc: "100K+ judul buku",
+            href: "/collection?genre=&page=1&search=",
+        },
+        {
+            icon: Sparkles,
+            label: "Baru Ditambahkan",
+            desc: "Update hari ini",
+            href: "/",
+        },
+        {
+            icon: Bookmark,
+            label: "Daftar Bacaan",
+            desc: "Buku tersimpan",
+            href: "/collection/wishlist",
+        }
+    ];
+
     const settingItems = [
         { icon: Bookmark, label: "Daftar Bacaan", desc: "Buku tersimpan", href: "/collection/wishlist" },
         { icon: Settings, label: "Pengaturan", desc: "Kelola akun", href: "/profile" },
@@ -51,6 +72,11 @@ export default function Navbar() {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    const fullClose = () => {
+        setMobileDropdownOpen(false)
+        setMobileOpen(!mobileOpen)
+    }
 
     return (
         <nav className="fixed top-0 left-0 w-full h-20 bg-white/80 backdrop-blur-md border-b border-bukuku-border/30 z-[100] font-body transition-all duration-300">
@@ -180,7 +206,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile Toggle */}
-                <button onClick={() => setMobileOpen(!mobileOpen)} className={`md:hidden p-2 rounded-xl cursor-pointer transition-all duration-300 ${mobileOpen ? 'bg-bukuku-primary text-white' : 'bg-bukuku-light text-bukuku-primary'}`}>
+                <button onClick={fullClose} className={`md:hidden p-2 rounded-xl cursor-pointer transition-all duration-300 ${mobileOpen ? 'bg-bukuku-primary text-white' : 'bg-bukuku-light text-bukuku-primary'}`}>
                     {mobileOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </div>
@@ -194,7 +220,6 @@ export default function Navbar() {
                         <motion.div
                             animate={{
                                 height: "auto",
-                                opacity: 1,
                                 transition: {
                                     duration: 0.4,
                                     ease: "easeOut",
@@ -202,7 +227,6 @@ export default function Navbar() {
                             }}
                             initial={{
                                 height: 0,
-                                opacity: 0,
                                 transition: {
                                     duration: 0.3,
                                     ease: "easeInOut",
@@ -210,7 +234,6 @@ export default function Navbar() {
                             }}
                             exit={{
                                 height: 0,
-                                opacity: 0,
                                 transition: {
                                     duration: 0.3,
                                     ease: "easeInOut",
@@ -247,23 +270,79 @@ export default function Navbar() {
 
                                         if (link.hasDropdown) {
                                             return (
-                                                <div className={`rounded-xl p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer ${isActive ? 'bg-bukuku-light/90' : 'hover:bg-bukuku-light/50'}`}>
-                                                    <button onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)} className={`flex items-center justify-between w-full ${isActive ? 'text-bukuku-primary font-bold' : 'text-bukuku-text font-medium'}`}>
-                                                        <div className="flex items-center gap-x-2">
-                                                            <link.icon size={20} />
-                                                            <p className="text-sm">{link.name}</p>
-                                                        </div>
-                                                        <ChevronRight size={15} className={`transition-all duration-300 ${mobileDropdownOpen ? 'rotate-90' : ''}`} />
-                                                    </button>
+                                                <div>
+                                                    <div onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)} key={link.name} className={`rounded-xl group p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer ${isActive ? 'bg-bukuku-light/90' : 'hover:bg-bukuku-light/50'}`}>
+                                                        <button className={`flex cursor-pointer items-center justify-between w-full ${isActive ? 'text-bukuku-primary font-bold' : 'text-bukuku-text font-medium'}`}>
+                                                            <div className="flex items-center gap-x-2">
+                                                                <link.icon size={20} className="text-gray-400 group-hover:text-bukuku-primary transition-colors duration-300" />
+                                                                <p className="text-sm">{link.name}</p>
+                                                            </div>
+                                                            <ChevronRight size={15} className={`transition-all duration-300 ${mobileDropdownOpen ? 'rotate-90' : ''}`} />
+                                                        </button>
+                                                    </div>
+
+                                                    <AnimatePresence>
+                                                        {mobileDropdownOpen && (
+                                                            <motion.div
+                                                                animate={{
+                                                                    height: "auto",
+                                                                    transition: {
+                                                                        duration: 0.4,
+                                                                        ease: "easeOut",
+                                                                    }
+                                                                }}
+                                                                initial={{
+                                                                    height: 0,
+                                                                    transition: {
+                                                                        duration: 0.3,
+                                                                        ease: "easeInOut",
+                                                                    }
+                                                                }}
+                                                                exit={{
+                                                                    height: 0,
+                                                                    transition: {
+                                                                        duration: 0.3,
+                                                                        ease: "easeInOut",
+                                                                    }
+                                                                }}
+                                                                className="overflow-hidden">
+
+                                                                <div className="flex py-1.5 pl-5 pr-2 w-full">
+                                                                    {/* Side Line */}
+                                                                    <div className="w-0.5 bg-bukuku-light" />
+
+                                                                    {/* Dropdown Links */}
+                                                                    <div className="flex flex-col px-5 py-2 gap-2 w-full">
+                                                                        {mobileKoleksiItems.map((dropdownLink) => (
+                                                                            <div key={dropdownLink.label} className={`rounded-xl p-3 flex group items-center gap-x-3 transition-all duration-300 cursor-pointer hover:bg-bukuku-light/50`}>
+                                                                                <Link href={dropdownLink.href} onClick={fullClose} className={`flex items-center justify-between w-full ${isActive ? 'text-bukuku-primary font-bold' : 'text-bukuku-text font-medium'}`}>
+                                                                                    <div className="flex items-center gap-x-2">
+                                                                                        <div className="p-2 rounded-lg bg-bukuku-light transition-all duration-300 group-hover:text-white group-hover:bg-bukuku-primary">
+                                                                                            <dropdownLink.icon size={20} />
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <p className="text-sm font-bold text-bukuku-text leading-none mb-1">{dropdownLink.label}</p>
+                                                                                            <p className="text-xs text-gray-400">{dropdownLink.desc}</p>
+                                                                                        </div>                                                                                    </div>
+                                                                                </Link>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </motion.div>
+                                                        )}
+                                                    </AnimatePresence>
                                                 </div>
                                             )
                                         }
 
                                         return (
-                                            <div className={`rounded-xl p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer ${isActive ? 'bg-bukuku-light/90' : 'hover:bg-bukuku-light/50'}`}>
+                                            <div onClick={fullClose} key={link.name} className={`rounded-xl group p-3 flex items-center gap-x-3 transition-all duration-300 cursor-pointer ${isActive ? 'bg-bukuku-light/90' : 'hover:bg-bukuku-light/50'}`}>
                                                 <Link href={link.href} className={`flex items-center justify-between w-full ${isActive ? 'text-bukuku-primary font-bold' : 'text-bukuku-text font-medium'}`}>
                                                     <div className="flex items-center gap-x-2">
-                                                        <link.icon size={20} />
+                                                        <link.icon size={20} className="text-gray-400 group-hover:text-bukuku-primary transition-colors duration-300" />
                                                         <p className="text-sm">{link.name}</p>
                                                     </div>
                                                 </Link>
